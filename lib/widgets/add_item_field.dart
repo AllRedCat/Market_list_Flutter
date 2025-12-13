@@ -27,12 +27,20 @@ class AddItemField extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 8.0),
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () {
-              onAdd(Controller.text);
-              Controller.clear();
-            },
+          Container(
+            decoration: const ShapeDecoration(
+              color: Colors.lightBlue,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(8.0)),
+              ),
+            ),
+            child: IconButton(
+              icon: const Icon(Icons.add),
+              onPressed: () {
+                onAdd(Controller.text);
+                Controller.clear();
+              },
+            ),
           ),
         ],
       ),

@@ -17,6 +17,7 @@ class ListPage extends StatefulWidget {
 
 class _ListPageState extends State<ListPage> {
   final TextEditingController controller = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
   List<Item> items = [];
 
   @override
@@ -50,6 +51,15 @@ class _ListPageState extends State<ListPage> {
       items.add(Item(name: name));
     });
     _saveItems();
+    
+    // Scroll para o final após adicionar o item
+    Future.delayed(const Duration(milliseconds: 100), () {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    });
   }
 
   void ToggleItem(int index) {
@@ -67,6 +77,12 @@ class _ListPageState extends State<ListPage> {
   }
 
   @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Lista de compras")),
@@ -74,6 +90,7 @@ class _ListPageState extends State<ListPage> {
         children: [
           Expanded(
             child: ListView.builder(
+              controller: _scrollController,
               itemCount: items.length,
               itemBuilder: (context, index) {
                 return ItemTile(
@@ -95,6 +112,7 @@ class _ListPageState extends State<ListPage> {
             ),
           ),
           AddItemField(onAdd: AddItem),
+          const SizedBox(height: 16.0),
         ],
       ),
     );

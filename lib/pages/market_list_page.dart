@@ -72,7 +72,6 @@ class _ListPageState extends State<ListPage> {
       appBar: AppBar(title: Text("Lista de compras")),
       body: Column(
         children: [
-          AddItemField(onAdd: AddItem),
           Expanded(
             child: ListView.builder(
               itemCount: items.length,
@@ -95,6 +94,7 @@ class _ListPageState extends State<ListPage> {
               },
             ),
           ),
+          AddItemField(onAdd: AddItem),
         ],
       ),
     );

@@ -20,6 +20,10 @@ class AddItemField extends StatelessWidget {
                 labelText: 'Adicionar item',
                 border: OutlineInputBorder(),
               ),
+              onSubmitted: (value) {
+                onAdd(Controller.text);
+                Controller.clear();
+              },
             ),
           ),
           const SizedBox(width: 8.0),

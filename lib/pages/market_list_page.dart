@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/item.dart';
 import '../widgets/add_item_field.dart';
 import '../widgets/item_tile.dart';
+import '../widgets/delete_item_dialog.dart';
 
 class ListPage extends StatefulWidget {
   const ListPage({super.key, required this.title});
@@ -80,7 +81,16 @@ class _ListPageState extends State<ListPage> {
                   name: items[index].name,
                   checked: items[index].checked,
                   onToggle: () => ToggleItem(index),
-                  onDelete: () => DeleteItem(index),
+                  onToggleDelete: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => DeleteDialog(
+                        itemName: items[index].name,
+                        onConfirm: () => DeleteItem(index),
+                      ),
+                    );
+                  },
+                  // onDelete: () => DeleteItem(index),
                 );
               },
             ),

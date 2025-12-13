@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class Item {
   String name;
   bool checked;

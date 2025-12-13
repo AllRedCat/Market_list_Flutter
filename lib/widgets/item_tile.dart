@@ -4,14 +4,16 @@ class ItemTile extends StatelessWidget {
   final String name;
   final bool checked;
   final VoidCallback onToggle;
-  final VoidCallback onDelete;
+  final VoidCallback onToggleDelete;
+  // final VoidCallback onDelete;
 
   const ItemTile({
     super.key,
     required this.name,
     required this.checked,
     required this.onToggle,
-    required this.onDelete,
+    required this.onToggleDelete,
+    // required this.onDelete,
   });
 
   @override
@@ -26,7 +28,7 @@ class ItemTile extends StatelessWidget {
       ),
       trailing: IconButton(
         icon: const Icon(Icons.delete),
-        onPressed: onDelete,
+        onPressed: onToggleDelete,
       ),
     );
   }

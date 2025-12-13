@@ -1,4 +1,7 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../models/item.dart';
 import '../widgets/add_item_field.dart';
 import '../widgets/item_tile.dart';
 
@@ -13,33 +16,59 @@ class ListPage extends StatefulWidget {
 
 class _ListPageState extends State<ListPage> {
   final TextEditingController controller = TextEditingController();
-  List<Map<String, dynamic>> items = [];
+  List<Item> items = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadItems();
+  }
+
+  Future<void> _loadItems() async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonString = prefs.getString('items');
+    if (jsonString != null && jsonString.isNotEmpty) {
+      final List decoded = jsonDecode(jsonString) as List;
+      setState(() {
+        items = decoded
+            .map((e) => Item.fromJson(e as Map<String, dynamic>))
+            .toList();
+      });
+    }
+  }
+
+  Future<void> _saveItems() async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonString = jsonEncode(items.map((e) => e.toJson()).toList());
+    await prefs.setString('items', jsonString);
+  }
 
   void AddItem(String name) {
+    if (name.trim().isEmpty) return;
     setState(() {
-      items.add({'name': name, 'checked': false});
+      items.add(Item(name: name));
     });
+    _saveItems();
   }
 
   void ToggleItem(int index) {
     setState(() {
-      items[index]['checked'] = !items[index]['checked'];
+      items[index].checked = !items[index].checked;
     });
+    _saveItems();
   }
 
   void DeleteItem(int index) {
     setState(() {
       items.removeAt(index);
     });
+    _saveItems();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        // backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text("Lista de compras"),
-      ),
+      appBar: AppBar(title: Text("Lista de compras")),
       body: Column(
         children: [
           AddItemField(onAdd: AddItem),
@@ -48,8 +77,8 @@ class _ListPageState extends State<ListPage> {
               itemCount: items.length,
               itemBuilder: (context, index) {
                 return ItemTile(
-                  name: items[index]['name'],
-                  checked: items[index]['checked'],
+                  name: items[index].name,
+                  checked: items[index].checked,
                   onToggle: () => ToggleItem(index),
                   onDelete: () => DeleteItem(index),
                 );

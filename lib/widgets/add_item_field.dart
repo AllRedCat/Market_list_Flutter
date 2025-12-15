@@ -29,7 +29,7 @@ class AddItemField extends StatelessWidget {
           const SizedBox(width: 8.0),
           Container(
             decoration: const ShapeDecoration(
-              color: Colors.lightBlue,
+              color: Color(0xFF3584E4),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(8.0)),
               ),

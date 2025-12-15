@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:market_list/pages/market_list_page.dart';
+import 'package:market_list/pages/home_page.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const App());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class App extends StatelessWidget {
+  const App({super.key});
 
   // This widget is the root of your application.
   @override
@@ -16,19 +16,19 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.blue,
+          seedColor: Color(0xFF3584E4),
           brightness: Brightness.light,
         ),
         useMaterial3: true,
       ),
       darkTheme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.blue,
+          seedColor: Color(0xFF3584E4),
           brightness: Brightness.dark,
         ),
         useMaterial3: true,
       ),
-      home: const ListPage(title: 'Lista de compras'),
+      home: HomePage(),
     );
   }
 }

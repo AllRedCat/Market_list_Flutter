@@ -20,15 +20,27 @@ class AddItemField extends StatelessWidget {
                 labelText: 'Adicionar item',
                 border: OutlineInputBorder(),
               ),
+              onSubmitted: (value) {
+                onAdd(Controller.text);
+                Controller.clear();
+              },
             ),
           ),
           const SizedBox(width: 8.0),
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () {
-              onAdd(Controller.text);
-              Controller.clear();
-            },
+          Container(
+            decoration: const ShapeDecoration(
+              color: Color(0xFF3584E4),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(8.0)),
+              ),
+            ),
+            child: IconButton(
+              icon: const Icon(Icons.add),
+              onPressed: () {
+                onAdd(Controller.text);
+                Controller.clear();
+              },
+            ),
           ),
         ],
       ),

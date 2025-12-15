@@ -30,6 +30,7 @@ class ItemTile extends StatelessWidget {
         icon: const Icon(Icons.delete),
         onPressed: onToggleDelete,
       ),
+      onTap: onToggle,
     );
   }
 }

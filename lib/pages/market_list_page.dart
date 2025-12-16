@@ -97,7 +97,7 @@ class _ListPageState extends State<ListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Lista de compras")),
+      appBar: AppBar(title: Text(widget.listItems.name)),
       body: Column(
         children: [
           Expanded(

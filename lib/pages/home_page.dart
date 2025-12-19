@@ -74,7 +74,11 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Listas')),
+      appBar: AppBar(
+        title: const Text('Listas'),
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+      ),
       body: Column(
         children: [
           Expanded(
@@ -111,9 +115,7 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () => showDialog(
           context: context,
-          builder: (context) => AddListDialog(
-            onAdd: AddList,
-          ),
+          builder: (context) => AddListDialog(onAdd: AddList),
         ),
         child: const Icon(Icons.add),
       ),

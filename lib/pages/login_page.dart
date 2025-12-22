@@ -43,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Image(image: AssetImage('assets/logo.png'), height: 120.0),
+          Image(image: AssetImage('assets/logo.png'), height: 60.0),
           const Text(
             'Bem vindo!',
             style: TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold),

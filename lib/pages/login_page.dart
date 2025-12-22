@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:market_list/widgets/login_form.dart';
-import 'package:market_list/pages/home_page.dart';
+import 'package:market_list/pages/lists_page.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   Future<void> _handdleLogin(
     BuildContext context,
     String email,
@@ -20,7 +25,7 @@ class LoginPage extends StatelessWidget {
     if (email == "test@email.com" && password == "123456") {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const HomePage()),
+        MaterialPageRoute(builder: (context) => const ListsPage()),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -32,60 +37,58 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        margin: const EdgeInsets.all(16.0),
-        alignment: Alignment.center,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Image(image: AssetImage('assets/logo.png'), height: 120.0),
-            const Text(
-              'Bem vindo!',
-              style: TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16.0),
-            LoginForm(
-              onSubmit: (email, password) =>
-                  _handdleLogin(context, email, password),
-            ),
-            Divider(height: 38.0),
-            ElevatedButton(
-              onPressed: null,
-              style: ButtonStyle(
-                minimumSize: WidgetStatePropertyAll(Size.fromHeight(48.0)),
-                backgroundColor: WidgetStatePropertyAll(
-                  Color.fromARGB(255, 212, 212, 212),
-                ),
-                shape: WidgetStatePropertyAll(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                  ),
+    return Container(
+      margin: const EdgeInsets.all(16.0),
+      alignment: Alignment.center,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Image(image: AssetImage('assets/logo.png'), height: 120.0),
+          const Text(
+            'Bem vindo!',
+            style: TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 16.0),
+          LoginForm(
+            onSubmit: (email, password) =>
+                _handdleLogin(context, email, password),
+          ),
+          Divider(height: 38.0),
+          ElevatedButton(
+            onPressed: null,
+            style: ButtonStyle(
+              minimumSize: WidgetStatePropertyAll(Size.fromHeight(48.0)),
+              backgroundColor: WidgetStatePropertyAll(
+                Color.fromARGB(255, 212, 212, 212),
+              ),
+              shape: WidgetStatePropertyAll(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
                 ),
               ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image(
-                    image: AssetImage('assets/google_logo.png'),
-                    height: 24.0,
-                    width: 24.0,
-                  ),
-                  SizedBox(width: 12),
-                  Text(
-                    'Entrar com conta Google',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
             ),
-          ],
-        ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image(
+                  image: AssetImage('assets/google_logo.png'),
+                  height: 24.0,
+                  width: 24.0,
+                ),
+                SizedBox(width: 12),
+                Text(
+                  'Entrar com conta Google',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

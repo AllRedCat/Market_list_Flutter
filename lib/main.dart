@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:market_list/pages/home_page.dart';
-import 'package:market_list/pages/login_page.dart';
+import 'package:market_list/pages/home_page.dart';
 
 void main() {
   runApp(const App());
@@ -30,7 +29,7 @@ class App extends StatelessWidget {
         useMaterial3: true,
       ),
       // home: HomePage(),
-      home: LoginPage(),
+      home: HomePage(),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:market_list/pages/login_page.dart';
+import 'package:market_list/pages/resgister_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -25,24 +26,7 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-        body: TabBarView(
-          children: <Widget>[
-            LoginPage(),
-            Container(
-              color: Colors.blue,
-              child: Center(
-                child: Text(
-                  'Tela de Registro',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
+        body: TabBarView(children: <Widget>[LoginPage(), RegisterPage()]),
       ),
     );
   }

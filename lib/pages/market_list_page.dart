@@ -48,7 +48,9 @@ class _ListPageState extends State<ListPage> {
     if (jsonString != null && jsonString.isNotEmpty) {
       final List decoded = jsonDecode(jsonString) as List;
       final lists = decoded.map((e) => ItemsList.fromJson(e)).toList();
-      final index = lists.indexWhere((list) => list.name == widget.listItems.name);
+      final index = lists.indexWhere(
+        (list) => list.name == widget.listItems.name,
+      );
       if (index != -1) {
         lists[index].items = widget.listItems.items;
         final updatedJson = jsonEncode(lists.map((e) => e.toJson()).toList());
@@ -63,7 +65,7 @@ class _ListPageState extends State<ListPage> {
       widget.listItems.items.add(Item(name: name));
     });
     _saveItems();
-    
+
     // Scroll para o final após adicionar o item
     Future.delayed(const Duration(milliseconds: 100), () {
       _scrollController.animateTo(
@@ -76,7 +78,8 @@ class _ListPageState extends State<ListPage> {
 
   void ToggleItem(int index) {
     setState(() {
-      widget.listItems.items[index].checked = !widget.listItems.items[index].checked;
+      widget.listItems.items[index].checked =
+          !widget.listItems.items[index].checked;
     });
     _saveItems();
   }
@@ -97,7 +100,7 @@ class _ListPageState extends State<ListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Lista de compras")),
+      appBar: AppBar(title: Text(widget.listItems.name), centerTitle: true),
       body: Column(
         children: [
           Expanded(

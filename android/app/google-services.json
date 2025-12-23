@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "610331473800",
+    "project_id": "market-list-f535b",
+    "storage_bucket": "market-list-f535b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:610331473800:android:36a2215bcd5917292fec3d",
+        "android_client_info": {
+          "package_name": "com.example.market_list"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4Fbts9Ci6JkPGVYSYcXnM2IG8BKYhKgc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:market_list/services/auth_service.dart';
 import 'package:market_list/widgets/register_form.dart';
 import 'package:market_list/pages/lists_page.dart';
 
@@ -10,6 +12,8 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  String errorMessage = '';
+
   Future<void> _handleRegister(
     BuildContext context,
     String name,
@@ -21,15 +25,19 @@ class _RegisterPageState extends State<RegisterPage> {
         email.isEmpty ||
         password.isEmpty ||
         confirmPassword.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Por favor, preencha todos os campos.')),
-      );
+      setState(() {
+        errorMessage = 'Por favor, preencha todos os campos.';
+      });
       return;
     }
 
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(const SnackBar(content: Text('Registro ainda em processo')));
+    try {
+      await authService.value.register(email: email, password: password);
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        errorMessage = e.message ?? 'Erro desconhecido';
+      });
+    }
   }
 
   @override
@@ -45,7 +53,9 @@ class _RegisterPageState extends State<RegisterPage> {
             'Registri-se!',
             style: TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold),
           ),
-          const SizedBox(height: 16.0),
+          const SizedBox(height: 8.0),
+          Text(errorMessage, style: const TextStyle(color: Colors.red)),
+          const SizedBox(height: 8.0),
           RegisterForm(
             onSubmit: (name, email, password, confirmPassword) =>
                 _handleRegister(

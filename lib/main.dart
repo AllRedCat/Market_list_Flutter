@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:market_list/pages/home_page.dart';
+import 'package:market_list/layout/auth_layout.dart';
 
-void main() {
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const App());
 }
 
@@ -28,8 +34,7 @@ class App extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      // home: HomePage(),
-      home: HomePage(),
+      home: AuthLayout(pageIfNotConnected: HomePage()),
     );
   }
 }

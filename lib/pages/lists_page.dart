@@ -8,6 +8,7 @@ import 'package:market_list/models/list.dart';
 import 'package:market_list/widgets/delete_list_dialog.dart';
 import 'package:market_list/widgets/add_list_dialog.dart';
 import 'package:market_list/widgets/edit_list_dialog.dart';
+import 'package:market_list/pages/account_page.dart';
 
 class ListsPage extends StatefulWidget {
   const ListsPage({super.key});
@@ -78,6 +79,17 @@ class _ListsPageState extends State<ListsPage> {
         title: const Text('Listas'),
         centerTitle: true,
         automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.account_circle),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const AccountPage()),
+              );
+            },
+          ),
+        ],
       ),
       body: Column(
         children: [

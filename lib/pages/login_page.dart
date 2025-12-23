@@ -1,3 +1,6 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:market_list/widgets/login_form.dart';
 import 'package:market_list/pages/lists_page.dart';
@@ -22,17 +25,20 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
 
-    if (email == "test@email.com" && password == "123456") {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const ListsPage()),
       );
-    } else {
+    } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Email ou senha incorretos.')),
+        SnackBar(content: Text(e.message ?? 'Erro ao fazer login.')),
       );
     }
-    // Implement your login logic here
   }
 
   @override

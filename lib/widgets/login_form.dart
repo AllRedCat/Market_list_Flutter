@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:market_list/pages/resetPass_page.dart';
 
 class LoginForm extends StatefulWidget {
   final Future<void> Function(String email, String password) onSubmit;
@@ -48,39 +49,55 @@ class _LoginFormState extends State<LoginForm> {
               ),
             ),
           ),
-          ElevatedButton(
-            onPressed: () {
-              setState(() {
-                _obscureText = !_obscureText;
-              });
-            },
-            style: ButtonStyle(
-              backgroundColor: WidgetStatePropertyAll(Colors.transparent),
-              elevation: WidgetStatePropertyAll(0),
-              foregroundColor: WidgetStatePropertyAll(Colors.grey),
-              textStyle: WidgetStatePropertyAll(
-                TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold),
-              ),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  _obscureText ? Icons.visibility_off : Icons.visibility,
-                  color: Colors.grey,
-                ),
-                SizedBox(width: 12),
-                Text(
-                  'Mostrar senha',
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
+          Row(
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    _obscureText = !_obscureText;
+                  });
+                },
+                style: ButtonStyle(
+                  backgroundColor: WidgetStatePropertyAll(Colors.transparent),
+                  elevation: WidgetStatePropertyAll(0),
+                  foregroundColor: WidgetStatePropertyAll(Colors.grey),
+                  textStyle: WidgetStatePropertyAll(
+                    TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold),
                   ),
                 ),
-              ],
-            ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      _obscureText ? Icons.visibility_off : Icons.visibility,
+                      color: Colors.grey,
+                    ),
+                    SizedBox(width: 12),
+                    Text(
+                      'Mostrar senha',
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Spacer(),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ResetPassPage(),
+                    ),
+                  );
+                },
+                child: Text('Esqueci minha senha'),
+              ),
+            ],
           ),
           const SizedBox(height: 8.0),
           ElevatedButton(

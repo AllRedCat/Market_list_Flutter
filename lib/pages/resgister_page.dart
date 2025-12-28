@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:market_list/services/auth_service.dart';
 import 'package:market_list/widgets/register_form.dart';
-import 'package:market_list/pages/lists_page.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});

@@ -8,7 +8,7 @@ import 'package:market_list/models/list.dart';
 import 'package:market_list/widgets/delete_list_dialog.dart';
 import 'package:market_list/widgets/add_list_dialog.dart';
 import 'package:market_list/widgets/edit_list_dialog.dart';
-import 'package:market_list/pages/account_page.dart';
+import 'package:market_list/pages/menu_page.dart';
 
 class ListsPage extends StatefulWidget {
   const ListsPage({super.key});

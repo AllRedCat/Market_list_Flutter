@@ -3,11 +3,14 @@ import 'package:market_list/pages/home_page.dart';
 import 'package:market_list/layout/auth_layout.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:market_list/services/auth_service.dart';
 import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  authService = ValueNotifier(AuthService());
+  AuthService.initialize();
   runApp(const App());
 }
 

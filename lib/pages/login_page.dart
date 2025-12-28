@@ -1,9 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:market_list/widgets/login_form.dart';
-import 'package:market_list/pages/lists_page.dart';
+import 'package:market_list/services/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -13,7 +12,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  Future<void> _handdleLogin(
+  Future<void> _handleLogin(
     BuildContext context,
     String email,
     String password,
@@ -25,19 +24,17 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
 
+    await authService.value.signIn(email: email, password: password);
+  }
+
+  Future<void> _handleLoginWithGoogle(BuildContext context) async {
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const ListsPage()),
-      );
-    } on FirebaseAuthException catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.message ?? 'Erro ao fazer login.')),
-      );
+      await authService.value.signInWithGoogle();
+    } catch (e) {
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(content: Text(e.message ?? 'Erro ao fazer login com Google.')),
+      // );
+      print(e);
     }
   }
 
@@ -57,11 +54,11 @@ class _LoginPageState extends State<LoginPage> {
           const SizedBox(height: 16.0),
           LoginForm(
             onSubmit: (email, password) =>
-                _handdleLogin(context, email, password),
+                _handleLogin(context, email, password),
           ),
           Divider(height: 38.0),
           ElevatedButton(
-            onPressed: null,
+            onPressed: () => _handleLoginWithGoogle(context),
             style: ButtonStyle(
               minimumSize: WidgetStatePropertyAll(Size.fromHeight(48.0)),
               backgroundColor: WidgetStatePropertyAll(

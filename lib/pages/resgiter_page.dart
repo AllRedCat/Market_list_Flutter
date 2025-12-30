@@ -31,7 +31,11 @@ class _RegisterPageState extends State<RegisterPage> {
     }
 
     try {
-      await authService.value.register(email: email, password: password);
+      await authService.value.register(
+        email: email,
+        password: password,
+        name: name,
+      );
     } on FirebaseAuthException catch (e) {
       setState(() {
         errorMessage = e.message ?? 'Erro desconhecido';

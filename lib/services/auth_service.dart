@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'dart:developer' as developer;
+import 'dart:convert';
 
 // ValueNotifier<AuthService> authService = ValueNotifier(AuthService());
 late final ValueNotifier<AuthService> authService;
@@ -31,6 +33,8 @@ class AuthService {
         email: email,
         password: password,
       );
+    } on FirebaseAuthException catch (e) {
+      throw Exception(e.message);
     } finally {
       isLoading.value = false;
     }
@@ -39,13 +43,21 @@ class AuthService {
   Future<UserCredential> register({
     required String email,
     required String password,
+    String? name,
   }) async {
     isLoading.value = true;
     try {
-      return await _auth.createUserWithEmailAndPassword(
+      final credential = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+
+      if (name != null && name.isNotEmpty) {
+        await credential.user?.updateDisplayName(name);
+        await credential.user?.reload();
+      }
+
+      return credential;
     } finally {
       isLoading.value = false;
     }
@@ -66,10 +78,12 @@ class AuthService {
         idToken: googleAuth.idToken,
       );
 
+      developer.log(jsonEncode(credential));
+
       // Once signed in, return the UserCredential
       return await FirebaseAuth.instance.signInWithCredential(credential);
     } on GoogleSignInException catch (e) {
-      rethrow;
+      throw Exception(e);
     } finally {
       isLoading.value = false;
     }

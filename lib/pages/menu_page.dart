@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:market_list/layout/auth_layout.dart';
 import 'package:market_list/services/auth_service.dart';
+import 'package:market_list/pages/profile_page.dart';
 
 class AccountPage extends StatelessWidget {
   const AccountPage({super.key});
@@ -22,8 +23,17 @@ class AccountPage extends StatelessWidget {
       appBar: AppBar(title: const Text('Conta')),
       body: Column(
         children: [
-          ListTile(leading: Icon(Icons.person), title: Text('Perfil')),
-          ListTile(leading: Icon(Icons.settings), title: Text('Configurações')),
+          ListTile(
+            leading: Icon(Icons.person),
+            title: Text('Perfil'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProfilePage()),
+              );
+            },
+          ),
+          // ListTile(leading: Icon(Icons.settings), title: Text('Configurações')),
           ListTile(
             leading: Icon(Icons.logout, color: Colors.red),
             textColor: Colors.red,

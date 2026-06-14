@@ -33,6 +33,11 @@ class AccountPage extends StatelessWidget {
               );
             },
           ),
+          ListTile(
+            leading: Icon(Icons.construction),
+            title: Text('Teste'),
+            onTap: null,
+          ),
           // ListTile(leading: Icon(Icons.settings), title: Text('Configurações')),
           ListTile(
             leading: Icon(Icons.logout, color: Colors.red),

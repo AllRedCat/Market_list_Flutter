@@ -16,8 +16,7 @@ class AuthService {
   Stream<User?> get authStateChanges => _auth.authStateChanges();
 
   static void initialize() async {
-    final GoogleSignIn googleSignIn = GoogleSignIn.instance;
-    await googleSignIn.initialize(
+    await GoogleSignIn.instance.initialize(
       clientId:
           '610331473800-vus19h6kmk8tq1hj5q1ifk85v649jqqd.apps.googleusercontent.com',
     );
@@ -66,30 +65,40 @@ class AuthService {
   Future<UserCredential> signInWithGoogle() async {
     isLoading.value = true;
     try {
-      // Trigger the authentication flow
-      final GoogleSignInAccount googleUser = await GoogleSignIn.instance
-          .authenticate();
+      // Trigger the authentication flow using the custom API version
+      final GoogleSignInAccount googleUser =
+          await GoogleSignIn.instance.authenticate();
 
-      // Obtain the auth details from the request
+      // Obtain the auth details
       final GoogleSignInAuthentication googleAuth = googleUser.authentication;
+
+      // In this version, accessToken is obtained via authorizationClient
+      final authz = await googleUser.authorizationClient
+          .authorizeScopes(['email', 'profile']);
 
       // Create a new credential
       final credential = GoogleAuthProvider.credential(
+        accessToken: authz.accessToken,
         idToken: googleAuth.idToken,
       );
 
-      developer.log(jsonEncode(credential));
+      developer.log('Credential created successfully');
 
       // Once signed in, return the UserCredential
       return await FirebaseAuth.instance.signInWithCredential(credential);
     } on GoogleSignInException catch (e) {
-      throw Exception(e);
+      developer.log('GoogleSignInException: ${e.code} - ${e.description}');
+      throw Exception('Erro Google (${e.code}): ${e.description}');
+    } catch (e) {
+      developer.log('Erro desconhecido no login Google: $e');
+      throw Exception('Erro inesperado: $e');
     } finally {
       isLoading.value = false;
     }
   }
 
   Future<void> signOut() async {
+    await GoogleSignIn.instance.signOut();
     await _auth.signOut();
   }
 

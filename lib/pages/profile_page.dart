@@ -8,8 +8,6 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final currentUser = authService.value.currentUser;
 
-    print(currentUser);
-
     return Scaffold(
       appBar: AppBar(title: const Text('Perfil')),
       body: currentUser != null

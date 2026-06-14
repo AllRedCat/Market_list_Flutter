@@ -33,8 +33,9 @@ class _LoginPageState extends State<LoginPage> {
     try {
       await authService.value.signInWithGoogle();
     } catch (e) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString())),
+        SnackBar(content: Text('Erro ao entrar com Google: $e')),
       );
     }
   }

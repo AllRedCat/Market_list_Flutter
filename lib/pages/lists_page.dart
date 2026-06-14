@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:market_list/pages/market_list_page.dart';
+import 'package:market_list/pages/items_page.dart';
 import 'package:market_list/widgets/list_item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:market_list/models/list.dart';

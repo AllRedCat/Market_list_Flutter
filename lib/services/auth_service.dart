@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'dart:developer' as developer;
-import 'dart:convert';
+import 'dart:io' show Platform;
 
 // ValueNotifier<AuthService> authService = ValueNotifier(AuthService());
 late final ValueNotifier<AuthService> authService;
@@ -16,9 +16,22 @@ class AuthService {
   Stream<User?> get authStateChanges => _auth.authStateChanges();
 
   static void initialize() async {
+    String? clientId;
+    if (kIsWeb) {
+      clientId =
+          '610331473800-q3skut3vljuigkl7drmloov38gqab7s0.apps.googleusercontent.com';
+    } else if (Platform.isIOS || Platform.isMacOS) {
+      clientId =
+          '610331473800-l04a64v0babknvn34eg4iohdqi4ste36.apps.googleusercontent.com';
+    } else if (Platform.isAndroid) {
+      clientId =
+          '610331473800-vus19h6kmk8tq1hj5q1ifk85v649jqqd.apps.googleusercontent.com';
+    }
+
     await GoogleSignIn.instance.initialize(
-      clientId:
-          '610331473800-vus19h6kmk8tq1hj5q1ifk85v649jqqd.apps.googleusercontent.com',
+      clientId: clientId,
+      serverClientId:
+          '610331473800-q3skut3vljuigkl7drmloov38gqab7s0.apps.googleusercontent.com',
     );
   }
 

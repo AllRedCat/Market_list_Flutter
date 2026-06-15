@@ -1,14 +1,12 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:market_list/pages/items_page.dart';
 import 'package:market_list/widgets/list_item.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:market_list/models/list.dart';
 import 'package:market_list/widgets/delete_list_dialog.dart';
 import 'package:market_list/widgets/add_list_dialog.dart';
 import 'package:market_list/widgets/edit_list_dialog.dart';
 import 'package:market_list/pages/menu_page.dart';
+import 'package:market_list/services/firestore_service.dart';
 
 class ListsPage extends StatefulWidget {
   const ListsPage({super.key});
@@ -18,57 +16,52 @@ class ListsPage extends StatefulWidget {
 }
 
 class _ListsPageState extends State<ListsPage> {
-  List<ItemsList> itemLists = [];
-  @override
-  void initState() {
-    super.initState();
-    _loadLists();
-  }
+  final FirestoreService _firestoreService = FirestoreService();
 
-  Future<void> _loadLists() async {
-    final prefs = await SharedPreferences.getInstance();
-    final jsonString = prefs.getString('lists');
-    if (jsonString != null && jsonString.isNotEmpty) {
-      final List decoded = jsonDecode(jsonString) as List;
-      setState(() {
-        itemLists = decoded.map((e) => ItemsList.fromJson(e)).toList();
-      });
+  void _addList(String name) async {
+    if (name.trim().isEmpty) return;
+    try {
+      await _firestoreService.addList(name);
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erro ao adicionar lista: $e')),
+        );
+      }
     }
   }
 
-  Future<void> _saveLists() async {
-    final prefs = await SharedPreferences.getInstance();
-    final jsonString = jsonEncode(itemLists.map((e) => e.toJson()).toList());
-    await prefs.setString('lists', jsonString);
-  }
-
-  void AddList(String name) {
-    if (name.trim().isEmpty) return;
-    setState(() {
-      itemLists.add(ItemsList(name: name));
-    });
-    _saveLists();
-  }
-
-  void EditList(int index, String newName) {
+  void _editList(ItemsList list, String newName) async {
     if (newName.trim().isEmpty) return;
-    setState(() {
-      itemLists[index].name = newName;
-    });
-    _saveLists();
+    try {
+      list.name = newName;
+      await _firestoreService.updateList(list);
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erro ao editar lista: $e')),
+        );
+      }
+    }
   }
 
-  void DeleteList(int index) {
-    setState(() {
-      itemLists.removeAt(index);
-    });
-    _saveLists();
+  void _deleteList(String? id) async {
+    if (id == null) return;
+    try {
+      await _firestoreService.deleteList(id);
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erro ao excluir lista: $e')),
+        );
+      }
+    }
   }
 
-  void navigate(i) {
+  void _navigate(ItemsList list) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ListPage(listItems: i)),
+      MaterialPageRoute(builder: (context) => ListPage(listItems: list)),
     );
   }
 
@@ -91,43 +84,56 @@ class _ListsPageState extends State<ListsPage> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: itemLists.length,
-              itemBuilder: (context, index) {
-                return ListItem(
-                  name: itemLists[index].name,
-                  onToggle: () => navigate(itemLists[index]),
-                  onToggleEdit: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) => EditListDialog(
-                        onUpdate: (newName) => EditList(index, newName),
-                        oldName: itemLists[index].name,
-                      ),
-                    );
-                  },
-                  onToggleDelete: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) => DeleteListDialog(
-                        name: itemLists[index].name,
-                        onConfirm: () => DeleteList(index),
-                      ),
-                    );
-                  },
-                );
-              },
-            ),
-          ),
-        ],
+      body: StreamBuilder<List<ItemsList>>(
+        stream: _firestoreService.getLists(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(child: Text('Erro: ${snapshot.error}'));
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          final itemLists = snapshot.data ?? [];
+
+          if (itemLists.isEmpty) {
+            return const Center(child: Text('Nenhuma lista encontrada.'));
+          }
+
+          return ListView.builder(
+            itemCount: itemLists.length,
+            itemBuilder: (context, index) {
+              final list = itemLists[index];
+              return ListItem(
+                name: list.name,
+                onToggle: () => _navigate(list),
+                onToggleEdit: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => EditListDialog(
+                      onUpdate: (newName) => _editList(list, newName),
+                      oldName: list.name,
+                    ),
+                  );
+                },
+                onToggleDelete: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => DeleteListDialog(
+                      name: list.name,
+                      onConfirm: () => _deleteList(list.id),
+                    ),
+                  );
+                },
+              );
+            },
+          );
+        },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => showDialog(
           context: context,
-          builder: (context) => AddListDialog(onAdd: AddList),
+          builder: (context) => AddListDialog(onAdd: _addList),
         ),
         child: const Icon(Icons.add),
       ),

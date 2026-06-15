@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:market_list/pages/resetPass_page.dart';
+import 'package:market_list/pages/reset_pass_page.dart';
 
 class LoginForm extends StatefulWidget {
   final Future<void> Function(String email, String password) onSubmit;

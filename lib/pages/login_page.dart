@@ -26,7 +26,6 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     await authService.value.signIn(email: email, password: password);
-    print(authService.value.currentUser);
   }
 
   Future<void> _handleLoginWithGoogle(BuildContext context) async {

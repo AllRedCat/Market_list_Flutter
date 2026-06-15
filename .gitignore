@@ -72,3 +72,9 @@ local.properties
 
 # Misc
 *.log
+
+# Firebase configuration files
+google-services.json
+GoogleService-Info.plist
+firebase_options.dart
+.firebase/

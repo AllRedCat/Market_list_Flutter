@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+
 import 'package:flutter/material.dart';
 import 'package:market_list/widgets/login_form.dart';
 import 'package:market_list/services/auth_service.dart';
@@ -31,10 +32,10 @@ class _LoginPageState extends State<LoginPage> {
     try {
       await authService.value.signInWithGoogle();
     } catch (e) {
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   SnackBar(content: Text(e.message ?? 'Erro ao fazer login com Google.')),
-      // );
-      print(e);
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erro ao entrar com Google: $e')),
+      );
     }
   }
 
